@@ -128,6 +128,21 @@ body {
 	text-align: center;
 }
 
+.info-box {
+	margin: 0 auto;
+	padding: 1em;
+	background: #00b;
+	border: 2px solid #fff;
+	border-radius: 10px;
+	font-family: 'Roboto', sans-serif;
+	color: #fff;
+	opacity: 0;
+	transform: translateY(-100px);
+	position: absolute;
+	top: 35%;
+	transition: all 0.25s;
+	z-index: 100;
+}
 
 
 /********BUTTON STYLES*********/
@@ -171,7 +186,7 @@ body {
 	}
 
 #reset-game {
-	margin: 10px auto 0 10px;
+	margin: 10px 0;
 	max-width: 200px;
 	display: none;
 }
@@ -238,6 +253,15 @@ footer {
 /********TOGGLE STYLES*********/
 .show {
 	display: block !important;
+}
+
+.slide {
+	opacity: 1 !important;
+	transform: translateY(0px) !important;
+}
+
+.danger {
+	border: 2px solid red !important;
 }
 
 /********RESPONSIVE STYLES*********/

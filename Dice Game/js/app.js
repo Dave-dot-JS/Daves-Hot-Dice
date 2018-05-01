@@ -7,7 +7,10 @@ const bankRoll = document.getElementById('bank');
 const dropDownRules = document.getElementById('drop-down');
 const rulesList = document.getElementById('rules-list');
 const resetButton = document.getElementById('reset-game');
+const infoBox = document.getElementById('info');
 
+let submitBet;
+let submittedBet;
 let bet = 1;
 let roll;
 let bank = 100;
@@ -17,17 +20,25 @@ bankRoll.innerHTML = `<h4>$${bank}</h4>`;
 betButton.innerHTML = '<h2>Bet: $1</h2>'
 
 // Set up functions
-function setBet() {
-	bet = Math.round(Number(prompt('What is your bet?', '1')));
-
-	if (bet > bank) {
-		return alert('Cannot bet more than your bank roll.');
-	} else if (bet < 1) {
-		return alert('Cannot bet zero.');
-	}
-
-	betButton.innerHTML = `<h2>Bet: $${bet}</h2>`;
+function getBet() {
+	infoBox.innerHTML = 
+	"<h2>What is your bet?</h2><input type='text' placeholder='Bet' id='bet'><input type='submit' id='submit-bet' value='Submit'>";
+	infoBox.classList.add('slide');
+	submitBet = document.getElementById('submit-bet');
+	submitBet.addEventListener('click', setBet);
 }
+	
+function setBet() {
+	bet = document.getElementById('bet').value;
+
+	if (bet > bank || bet < 1) {
+		document.getElementById('bet').classList.add('danger');
+		submitBet.value = 'Invalid bet';
+	} else {
+		infoBox.classList.remove('slide');
+		betButton.innerHTML = `<h2>Bet: $${bet}</h2>`;
+	}
+}	
 
 
 function rollDice() {
@@ -69,7 +80,7 @@ function resolveGame() {
 }
 
 // Set up event listeners
-betButton.addEventListener('click', setBet);
+betButton.addEventListener('click', getBet);
 rollButton.addEventListener('click', rollDice);
 dropDownRules.addEventListener('click', toggleRules);
 resetButton.addEventListener('click', resetGame);
