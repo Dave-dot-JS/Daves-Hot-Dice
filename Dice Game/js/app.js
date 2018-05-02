@@ -7,7 +7,8 @@ const bankRoll = document.getElementById('bank');
 const dropDownRules = document.getElementById('drop-down');
 const rulesList = document.getElementById('rules-list');
 const resetButton = document.getElementById('reset-game');
-const infoBox = document.getElementById('info');
+const betBox = document.getElementById('bet-box');
+const resultsBox = document.getElementById('results-box');
 
 let submitBet;
 let submittedBet;
@@ -21,21 +22,20 @@ betButton.innerHTML = '<h2>Bet: $1</h2>'
 
 // Set up functions
 function getBet() {
-	infoBox.innerHTML = 
-	"<h2>What is your bet?</h2><input type='text' placeholder='Bet' id='bet'><input type='submit' id='submit-bet' value='Submit'>";
-	infoBox.classList.add('slide');
+	betBox.classList.add('slide');
 	submitBet = document.getElementById('submit-bet');
 	submitBet.addEventListener('click', setBet);
 }
 	
-function setBet() {
-	bet = document.getElementById('bet').value;
+function setBet(e) {
+	bet = Number(document.getElementById('bet').value);
 
 	if (bet > bank || bet < 1) {
 		document.getElementById('bet').classList.add('danger');
 		submitBet.value = 'Invalid bet';
+		setTimeout( () => submitBet.value = 'Submit', 1500);
 	} else {
-		infoBox.classList.remove('slide');
+		betBox.classList.remove('slide');
 		betButton.innerHTML = `<h2>Bet: $${bet}</h2>`;
 	}
 }	
@@ -45,7 +45,9 @@ function rollDice() {
 
 	// Make sure player can afford to roll
 	if (bet > bank) {
-		alert('Not enough money. Lower your bet.');
+		resultsBox.innerHTML = '<h3>Not enough money. Lower your bet.</h3>';
+		resultsBox.classList.add('slide');
+		setTimeout(() => resultsBox.classList.remove('slide'), 2000);
 	} else {
 
 		// Randomize the roll
@@ -64,20 +66,29 @@ function rollDice() {
 
 function resolveGame() {
 	if (roll > 3) {
-		alert(`You rolled a ${roll} and won $${bet}!`);
+		resultsBox.innerHTML = `<h3>You rolled a ${roll} and won $${bet}!</h3>`;
+		resultsBox.classList.add('slide');
+		setTimeout(() => resultsBox.classList.remove('slide'), 2000);
 		bank = bank + bet;
 		bankRoll.innerHTML = `<h4>$${bank}</h4>`;
 	} else {
-		alert(`You rolled a ${roll} and lost your bet.`);
+		resultsBox.innerHTML = `<h3>You rolled a ${roll} and lost your bet.</h3>`;
+		resultsBox.classList.add('slide');
+		setTimeout(() => resultsBox.classList.remove('slide'), 2000);
 		bank = bank - bet;
 		bankRoll.innerHTML = `<h4>$${bank}</h4>`;
 	}
 
 	if (bank === 0) {
-		alert('You are broke. Better luck next time');
-		resetButton.classList.add('show');
+		setTimeout(() => {
+			resultsBox.innerHTML = 'You are broke. Better luck next time';
+			resultsBox.classList.add('slide');
+			setTimeout(() => resultsBox.classList.remove('slide'), 2000);
+			resetButton.classList.add('show');
+		}, 2000);
 	}
 }
+
 
 // Set up event listeners
 betButton.addEventListener('click', getBet);
